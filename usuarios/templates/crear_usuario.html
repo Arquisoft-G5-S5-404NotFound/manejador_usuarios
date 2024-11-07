@@ -1,0 +1,17 @@
+<!-- usuarios/templates/usuarios/crear_usuario.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Usuario</title>
+</head>
+<body>
+    <h1>Crear Usuario</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crear Usuario</button>
+    </form>
+</body>
+</html>
