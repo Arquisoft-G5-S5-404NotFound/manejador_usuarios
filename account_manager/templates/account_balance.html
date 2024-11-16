@@ -14,17 +14,59 @@
   <p>No hay alumnos registrados a tu nombre.</p>
 {% endif %}
 
-<h3>Balance de cuenta <strong>{{ date }}</strong></h3>
-
 <h3>Cronogramas de pago</h3>
-{% if cronogramas %}
-  {% for cronograma, estudiante in cronogramas %}
-    <ul>
-      <li>$ {{ cronograma.valor }} - {{ estudiante.nombre }} <strong>(fecha de vencimiento: {{ cronograma.fecha_vencimiento }})</strong></li>
-    </ul>
-  {%endfor%}
+{% if pagos or no_pagos %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Valor</th>
+        <th>Fecha de vencimiento</th>
+        <th>Pagado</th>
+      </tr>
+    </thead>
+
+    {% for pago_cronograma in pagos %}
+      <tr class="table-success">
+        <td>$ {{ pago_cronograma.cronograma.valor }} </td>
+        <td>{{ pago_cronograma.cronograma.fecha_vencimiento }}</td>
+        <td>✅</td>
+      </tr>
+    {%endfor%}
+
+    {% for cronograma in no_pagos %}
+      <tr class="table-warning">
+        <td>$ {{ cronograma.valor }}</td>
+        <td>{{ cronograma.fecha_vencimiento }}</td>
+        <td>❌</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <h4 class="text-danger">Saldo pendiente: $ {{ balance }}</h4>
 {% else %}
   <p>No hay cronogramas por ser pagados.</p>
+{% endif %}
+
+<h3>Historial de pagos</h3>
+{% if pagos %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Valor</th>
+        <th>Fecha</th>
+        <th>Cronograma</th>
+      </tr>
+    </thead>
+  {% for pago in pagos %}
+    <tr>
+      <td>$ {{ pago.cronograma.valor }}</td>
+      <td>{{ pago.fecha }}</td>
+      <td>{{ pago.cronograma }}</td>
+    </tr>
+  {%endfor%}
+  </table>
+{% else %}
+  <p>No hay pagos registrados.</p>
 {% endif %}
 
 {% endblock %}
