@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
 import datetime
 from .models import Cronograma, Estudiante, PagoCronograma
 
@@ -29,3 +33,33 @@ def account_balance(request):
   }
 
   return render(request, context=ctx, template_name='account_balance.html')
+
+def payment_schedule(request):
+  cronogramas = Cronograma.objects.all()
+  data = [
+    {
+      "id": cronograma.cronograma_id,
+      "mes": cronograma.mes,
+      "valor": cronograma.valor,
+      "fecha_vencimiento": cronograma.fecha_vencimiento
+    }
+    for cronograma in cronogramas
+  ]
+  return JsonResponse(data, safe=False)
+
+def payment_schedule_get(request, pk):
+  cronograma_id = pk
+  cronograma = Cronograma.objects.get(cronograma_id=cronograma_id)
+  data = {
+    "id": cronograma.cronograma_id,
+    "mes": cronograma.mes,
+    "valor": cronograma.valor,
+    "fecha_vencimiento": cronograma.fecha_vencimiento
+  }
+  return JsonResponse(data)
+
+class CronogramaUpdate(PermissionRequiredMixin, UpdateView):
+  model = Cronograma
+  fields = '__all__'
+  template_name = 'update_cronograma.html'
+  permission_required = 'cronograma.can_edit'
