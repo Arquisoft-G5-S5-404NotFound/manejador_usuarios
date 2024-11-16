@@ -33,13 +33,12 @@ class Estudiante(models.Model):
   nombre = models.CharField(max_length=100)
   apellido = models.CharField(max_length=100)
   curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+  padre = models.ForeignKey('User', related_name='padre', on_delete=models.DO_NOTHING)
 
   def __str__(self):
     return f'{self.nombre} {self.apellido}'
 
 class User(AbstractUser):
-  estudiante = models.ForeignKey(Estudiante, null=True, blank=True, on_delete=models.DO_NOTHING)
-
   def __str__(self):
     return f'{self.username} - {self.first_name} {self.last_name}'
 
@@ -47,3 +46,9 @@ class User(AbstractUser):
     if not self.password.startswith('pbkdf2_sha256$'):
       self.password = make_password(self.password)
     super().save(*args, **kwargs)
+
+class PagoCronograma(models.Model):
+  id = models.AutoField(primary_key=True)
+  padre = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+  cronograma = models.ForeignKey(Cronograma, on_delete=models.DO_NOTHING)
+  fecha = models.DateField(default=datetime.now)

@@ -1,13 +1,30 @@
 {% extends "base_balance.html" %}
 
 {% block content %}
-<h1>Bienvenido <strong>{{user.username}}</strong></h1>
+<h2>Bienvenido <strong>{{user.username}}</strong></h1>
+<h3>Alumnos</h3>
 
-<h3>Cuenta de balance de <strong>{{ date }}</strong></h3>
-<p>Click <a href="/account-balance/balance/">aquí</a> para más información.</p>
+{% if estudiantes %}
+  {% for estudiante in estudiantes %}
+    <ul>
+      <li>{{ estudiante.nombre }} {{ estudiante.apellido }} - grado {{ estudiante.curso.grado }}</li>
+    </ul>
+  {%endfor%}
+{% else %}
+  <p>No hay alumnos registrados a tu nombre.</p>
+{% endif %}
 
-<h3>Payment schedules</h3>
-<p>In this section you will found the history of payment schedules for the current scholar year.</p>
+<h3>Balance de cuenta <strong>{{ date }}</strong></h3>
 
+<h3>Cronogramas de pago</h3>
+{% if cronogramas %}
+  {% for cronograma, estudiante in cronogramas %}
+    <ul>
+      <li>$ {{ cronograma.valor }} - {{ estudiante.nombre }} <strong>(fecha de vencimiento: {{ cronograma.fecha_vencimiento }})</strong></li>
+    </ul>
+  {%endfor%}
+{% else %}
+  <p>No hay cronogramas por ser pagados.</p>
+{% endif %}
 
 {% endblock %}
