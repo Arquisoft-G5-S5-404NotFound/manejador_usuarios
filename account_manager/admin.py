@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Cronograma, Curso, Estudiante
+from .models import Cronograma, Curso, Estudiante, User
 
 # Register your models here.
 @admin.register(Cronograma)
@@ -14,3 +14,7 @@ class CursoAdmin(admin.ModelAdmin):
 @admin.register(Estudiante)
 class EstudianteAdmin(admin.ModelAdmin):
   list_display = ('nombre', 'apellido', 'curso')
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+  list_display = ('username', 'first_name', 'last_name', 'is_active', 'date_joined')

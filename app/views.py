@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 from school_manager.logic import school_logic
-from school_manager.models import Student
+from account_manager.models import Estudiante as Student
 
 def app(request):
     schools_num = school_logic.get_schools().count()
