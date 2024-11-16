@@ -29,9 +29,7 @@
                         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                     </li>
                     <li class="nav-item ml-2">
-                        <a href="{% url 'account_balance' %}">
-                            <img src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="user icon" width="40px">
-                        </a>
+                        <img src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png" alt="user icon" width="40px">
                     </li>
 
                     {% else %}
@@ -46,17 +44,14 @@
 
     <!-- Main Content -->
     <main class="container my-5">
-        {% block content %}
-        <!-- Contenido de la página se insertará aquí -->
-        {% endblock %}
-    </main>
-
-    <!-- Footer -->
-    <footer style="position: absolute; bottom: 0; width: 100vw;">
-        <div class="bg-light text-center py-3">
-            <p class="mb-0"><strong>Desarrollado por ES</strong>    </p>
+    {% if user.is_authenticated %}    
+        {% block content %}{% endblock %}
+    {% else %}
+        <div id="error-alert" class="alert alert-danger" role="alert">
+            You are not authenticated, please <a href="{% url 'login'%}">login</a> to access to this page.
         </div>
-    </footer>
+    {% endif %}
+    </main>
 
     <!-- Bootstrap JS -->
     <script 
